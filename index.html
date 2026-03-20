@@ -10,144 +10,78 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             background: #1a1a1d;
             font-family: 'Segoe UI', sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
             transition: background 0.5s ease;
         }
 
-        /* 1. Título Colorido Animado */
         .titulo-banca {
-            font-size: 42px;
-            font-weight: bold;
-            margin-bottom: 40px;
+            font-size: 42px; font-weight: bold; margin-bottom: 40px;
             background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 400% 400%;
-            animation: gradientText 8s linear infinite;
-            text-transform: uppercase;
-            letter-spacing: 4px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-size: 400% 400%; animation: gradientText 8s linear infinite;
+            text-transform: uppercase; letter-spacing: 4px;
         }
 
-        @keyframes gradientText {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
+        @keyframes gradientText { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
-        /* 3. Estrutura da Banca com Apoio */
-        .shelf-wrapper {
-            position: relative;
-            transform: scale(1.2);
-        }
+        .shelf-wrapper { position: relative; transform: scale(1.1); }
 
         .shelf-container {
-            background: #4a2c2a;
-            padding: 30px;
-            border: 10px solid #361d1b;
-            border-radius: 8px 8px 0 0;
-            box-shadow: inset 0 0 50px #000;
-            display: flex;
-            gap: 20px;
-            perspective: 1000px;
-            position: relative;
-            z-index: 2;
+            background: #4a2c2a; padding: 30px; border: 10px solid #361d1b; border-radius: 8px 8px 0 0;
+            box-shadow: inset 0 0 50px #000; display: flex; gap: 20px; perspective: 1000px; position: relative; z-index: 2;
         }
 
-        .shelf-support {
-            height: 25px;
-            background: #2b1614;
-            width: 105%;
-            margin-left: -2.5%;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.7);
-        }
+        .shelf-support { height: 25px; background: #2b1614; width: 105%; margin-left: -2.5%; border-radius: 0 0 10px 10px; box-shadow: 0 15px 30px rgba(0,0,0,0.7); }
 
-        /* 4. Vidro Protetor Premium */
         .glass-pane {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            z-index: 10;
-            border-radius: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); z-index: 10;
+            border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer; display: flex; justify-content: center; align-items: center;
             transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
         }
 
-        .glass-pane::before {
-            content: 'ABRA';
-            color: white;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #000;
-            border: 2px solid white;
-            padding: 10px;
-        }
-
-        .glass-pane.opened {
-            transform: translateY(-110%) rotateX(20deg);
-            opacity: 0;
-            pointer-events: none;
-        }
+        .glass-pane::before { content: 'ABRA'; color: white; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px #000; border: 2px solid white; padding: 10px; }
+        .glass-pane.opened { transform: translateY(-110%) rotateX(20deg); opacity: 0; pointer-events: none; }
 
         .hq-item { text-align: center; color: #f0e68c; }
 
         .hq-box {
-            width: 120px; height: 180px;
+            width: 140px; height: 200px; /* Aumentei um pouco para caber os nomes */
             position: relative; transform-style: preserve-3d;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
 
-        .capa, .interior {
-            position: absolute; width: 100%; height: 100%;
-            border-radius: 2px; backface-visibility: hidden;
-        }
+        .capa, .interior { position: absolute; width: 100%; height: 100%; border-radius: 2px; backface-visibility: hidden; }
 
         .capa {
-            z-index: 2; transform-origin: left;
-            transition: transform 0.8s ease;
-            background-size: cover; background-position: center;
-            border-left: 3px solid #111;
+            z-index: 2; transform-origin: left; transition: transform 0.8s ease;
+            background-size: cover; background-position: center; border-left: 3px solid #111;
         }
 
         .interior {
             background: white; color: #333;
-            display: flex; align-items: center; justify-content: center;
-            transform: translateZ(-1px); font-size: 40px;
-            font-weight: bold; border: 1px solid #999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transform: translateZ(-1px); font-size: 16px; font-weight: bold; border: 1px solid #999;
+            text-align: center; line-height: 1.4; padding: 5px;
         }
 
         .hq-box.aberta .capa { transform: rotateY(-150deg); }
-        .hq-box.aberta { transform: scale(1.1) translateZ(50px); }
+        .hq-box.aberta { transform: scale(1.05); }
 
-        .nome { margin-top: 10px; font-weight: bold; font-size: 10px; text-transform: uppercase; }
+        .nome-capa { margin-top: 10px; font-weight: bold; font-size: 10px; text-transform: uppercase; }
 
-        /* NPC */
-        .npc-area {
-            position: fixed; bottom: 10px; right: 20px;
-            display: flex; flex-direction: column; align-items: center;
-        }
-
-        .balao {
-            background: white; padding: 8px 15px;
-            border-radius: 20px; font-weight: bold; margin-bottom: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            min-height: 20px;
-        }
-
+        .npc-area { position: fixed; bottom: 10px; right: 20px; display: flex; flex-direction: column; align-items: center; }
+        .balao { background: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; margin-bottom: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); min-height: 20px; }
         .vendedor-gif { width: 180px; filter: drop-shadow(0 0 10px #000); }
 
-        /* 2. Flash de cor no fundo */
+        /* Cores de fundo ao abrir */
         .flash-orange { background: #ff8c00 !important; }
+        .flash-gold { background: #daa520 !important; }
         .flash-red { background: #8b0000 !important; }
         .flash-purple { background: #4b0082 !important; }
         .flash-white { background: #dcdcdc !important; }
-        .flash-gold { background: #daa520 !important; }
-
     </style>
 </head>
 <body>
@@ -159,43 +93,43 @@
         
         <div class="shelf-container">
             <div class="hq-item">
-                <div class="hq-box" onclick="reagir(this, 'K', 'flash-orange')">
-                    <div class="interior">K</div>
+                <div class="hq-box" onclick="reagir(this, 'flash-orange')">
+                    <div class="interior">Yuri<br>Samyre</div>
                     <div class="capa" style="background-image: url('Chris.png');"></div>
                 </div>
-                <div class="nome">Chris</div>
+                <div class="nome-capa">Chris</div>
             </div>
 
             <div class="hq-item">
-                <div class="hq-box" onclick="reagir(this, 'A', 'flash-gold')">
-                    <div class="interior">A</div>
+                <div class="hq-box" onclick="reagir(this, 'flash-gold')">
+                    <div class="interior">Nelisa<br>Alex</div>
                     <div class="capa" style="background-image: url('Dália.png');"></div>
                 </div>
-                <div class="nome">Dália</div>
+                <div class="nome-capa">Dália</div>
             </div>
 
             <div class="hq-item">
-                <div class="hq-box" onclick="reagir(this, 'R', 'flash-red')">
-                    <div class="interior">R</div>
+                <div class="hq-box" onclick="reagir(this, 'flash-red')">
+                    <div class="interior">Gerbert<br>Karol</div>
                     <div class="capa" style="background-image: url('Kai.png');"></div>
                 </div>
-                <div class="nome">Kai</div>
+                <div class="nome-capa">Kai</div>
             </div>
 
             <div class="hq-item">
-                <div class="hq-box" onclick="reagir(this, 'O', 'flash-purple')">
-                    <div class="interior">O</div>
+                <div class="hq-box" onclick="reagir(this, 'flash-purple')">
+                    <div class="interior">Joel<br>Igor (invasor)</div>
                     <div class="capa" style="background-image: url('Mikela e Ugiri.png');"></div>
                 </div>
-                <div class="nome">Mikela e Ugiri</div>
+                <div class="nome-capa">Mikela e Ugiri</div>
             </div>
 
             <div class="hq-item">
-                <div class="hq-box" onclick="reagir(this, 'L', 'flash-white')">
-                    <div class="interior">L</div>
+                <div class="hq-box" onclick="reagir(this, 'flash-white')">
+                    <div class="interior">Amo vocês<br>❤️</div>
                     <div class="capa" style="background-image: url('Waiver.png');"></div>
                 </div>
-                <div class="nome">Waiver</div>
+                <div class="nome-capa">Waiver</div>
             </div>
         </div>
         <div class="shelf-support"></div>
@@ -207,20 +141,21 @@
     </div>
 
     <script>
-        function reagir(el, letra, corFlash) {
+        function reagir(el, corFlash) {
             const balao = document.getElementById('fala');
             const body = document.body;
             
-            const jaAberta = el.classList.contains('aberta');
-            
-            document.querySelectorAll('.hq-box').forEach(h => h.classList.remove('aberta'));
-            body.className = ""; 
+            // Alterna apenas a revista clicada (permite várias abertas)
+            el.classList.toggle('aberta');
 
-            if (!jaAberta) {
-                el.classList.add('aberta');
-                body.classList.add(corFlash);
+            // Verifica se tem QUALQUER revista aberta para mudar o fundo e a fala
+            const algumaAberta = document.querySelector('.hq-box.aberta');
+            
+            if (el.classList.contains('aberta')) {
+                body.className = corFlash; // O fundo muda para a cor da última aberta
                 balao.innerText = "Só tem gostoso aqui";
-            } else {
+            } else if (!algumaAberta) {
+                body.className = ""; // Volta ao normal se todas fecharem
                 balao.innerText = "Qual vai levar, cria?";
             }
         }
