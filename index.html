@@ -5,118 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banca Vila Velha - Reborn</title>
     <style>
+        :root {
+            --neon-color: #ff0055;
+            --shelf-wood: #361d1b;
+        }
+
         body {
             margin: 0; padding: 0; min-height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: #1a1a1d;
+            background: #0d0d0f;
             font-family: 'Segoe UI', sans-serif;
             overflow-x: hidden;
-            transition: background 0.3s ease;
+            transition: background 0.5s ease;
         }
 
-        /* Título agora posicionado em relação ao wrapper da banca */
         .titulo-banca {
-            font-size: 32px; font-weight: bold; 
-            margin-bottom: 10px; /* Colado na estante */
-            text-align: center;
+            font-size: 42px; font-weight: 900; margin-bottom: 20px; text-align: center;
             background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-size: 400% 400%; animation: gradientText 8s linear infinite;
-            text-transform: uppercase; letter-spacing: 3px;
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: rainbow 4s linear infinite; text-transform: uppercase; letter-spacing: 5px;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
         }
 
-        @keyframes gradientText { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+        @keyframes rainbow { to { background-position: 200% center; } }
 
         .shelf-wrapper { 
-            position: relative; 
-            transform: scale(1.15); 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: relative; transform: scale(1.1); display: flex;
+            flex-direction: column; align-items: center; perspective: 2000px;
         }
 
         .shelf-container {
-            background: #4a2c2a; 
-            /* Aumentei o terceiro valor (bottom) para 45px para o nome aparecer livre */
-            padding: 25px 25px 45px 25px; 
-            border: 10px solid #361d1b; 
-            border-radius: 8px 8px 0 0;
-            box-shadow: inset 0 0 50px #000; 
-            display: flex; 
-            gap: 25px; 
-            perspective: 1000px; 
-            position: relative; 
-            z-index: 2;
+            background: #2a1816; padding: 30px 30px 55px 30px; 
+            border: 12px solid var(--shelf-wood); border-radius: 12px 12px 0 0;
+            box-shadow: inset 0 0 80px #000, 0 20px 50px rgba(0,0,0,0.8);
+            display: flex; gap: 30px; position: relative; z-index: 2;
         }
 
-        .shelf-support { height: 20px; background: #2b1614; width: 104%; margin-left: -2%; border-radius: 0 0 10px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.7); }
+        .shelf-support { height: 25px; background: #1a0f0e; width: 106%; margin-left: -3%; border-radius: 0 0 15px 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.9); }
 
         .glass-pane {
-            position: absolute; 
-            top: 45px; /* Ajustado para começar abaixo do título */
-            left: 0; width: 100%; height: calc(100% - 65px);
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); z-index: 10;
-            border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.2);
+            position: absolute; top: 55px; left: 0; width: 100%; height: calc(100% - 80px);
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); z-index: 10;
+            border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.2);
             cursor: pointer; display: flex; justify-content: center; align-items: center;
-            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .glass-pane::before { content: 'ABRA'; color: white; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px #000; border: 2px solid white; padding: 10px; }
-        .glass-pane.opened { transform: translateY(-110%) rotateX(20deg); opacity: 0; pointer-events: none; }
+        .glass-pane::before { content: 'ABRA'; color: white; font-weight: 900; font-size: 50px; letter-spacing: 10px; text-shadow: 0 0 20px #fff; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .glass-pane.opened { transform: translateY(-110%) rotateX(45deg); opacity: 0; pointer-events: none; }
 
         .hq-item { text-align: center; }
-
         .hq-box {
-            width: 125px; height: 185px; 
-            position: relative; transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
+            width: 130px; height: 190px; position: relative; transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;
         }
 
-        .hq-box:hover:not(.aberta) { transform: translateY(-5px) rotateY(10deg); }
-
-        .capa, .interior { position: absolute; width: 100%; height: 100%; border-radius: 2px; backface-visibility: hidden; }
+        /* Efeito de aproximação (Zoom) quando aberta */
+        .hq-box.aberta { 
+            transform: translateZ(120px) scale(1.15); 
+            z-index: 50; 
+        }
 
         .capa {
             z-index: 2; transform-origin: left; transition: transform 0.8s ease;
-            background-size: cover; background-position: center; border-left: 3px solid #111;
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+            background-size: cover; background-position: center; border-left: 4px solid #000;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5); position: absolute; width: 100%; height: 100%;
+        }
+
+        /* Aumenta a sombra quando a revista se aproxima */
+        .hq-box.aberta .capa { 
+            transform: rotateY(-160deg); 
+            box-shadow: 25px 25px 40px rgba(0,0,0,0.7);
         }
 
         .interior {
-            background: white; color: #333;
+            background: white; color: #1a1a1d; position: absolute; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transform: translateZ(-1px); font-size: 15px; font-weight: bold; border: 1px solid #999;
-            text-align: center; line-height: 1.3; padding: 5px; box-sizing: border-box;
+            transform: translateZ(-1px); font-size: 16px; font-weight: 800; border: 1px solid #999;
+            text-align: center; padding: 5px; box-sizing: border-box;
+            transition: background 0.4s ease, color 0.4s ease;
         }
 
-        .hq-box.aberta .capa { transform: rotateY(-155deg); }
-        .hq-box.aberta { transform: scale(1.03); }
+        .nome-capa { margin-top: 15px; font-weight: 900; font-size: 11px; text-transform: uppercase; color: #ffcc00; text-shadow: 2px 2px 4px #000; }
 
-        .nome-capa { 
-            margin-top: 12px; 
-            font-weight: bold; font-size: 10px; 
-            text-transform: uppercase; color: #f0e68c; 
-            text-shadow: 1px 1px 2px #000;
-            position: relative;
-            z-index: 5;
+        .npc-area { position: fixed; bottom: 20px; right: 30px; display: flex; flex-direction: column; align-items: center; z-index: 100; }
+        .balao { background: white; padding: 12px 20px; border-radius: 25px; font-weight: 900; border: 3px solid #000; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .vendedor-gif { width: 180px; }
+
+        @media (max-width: 768px) {
+            .shelf-wrapper { transform: scale(0.85); }
+            .hq-box.aberta { transform: translateZ(60px) scale(1.1); }
         }
-
-        .npc-area { position: fixed; bottom: 10px; right: 20px; display: flex; flex-direction: column; align-items: center; }
-        .balao { background: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 14px; margin-bottom: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); min-height: 20px; }
-        .vendedor-gif { width: 180px; filter: drop-shadow(0 0 10px #000); }
     </style>
 </head>
 <body>
 
     <div class="shelf-wrapper">
         <div class="titulo-banca">Banca Vila Velha</div>
-
         <div class="glass-pane" onclick="this.classList.add('opened')"></div>
         
         <div class="shelf-container">
             <div class="hq-item">
-                <div class="hq-box" onclick="reagir(this, 255, 140, 0)">
+                <div class="hq-box" onclick="reagir(this, 255, 140, 0, 'Chris Muller, brabo demais!', 'linear-gradient(135deg, #ff8c00, #ff4500)', '#fff')">
                     <div class="interior">Yuri<br>Samyre</div>
                     <div class="capa" style="background-image: url('Chris.png');"></div>
                 </div>
@@ -124,7 +115,7 @@
             </div>
 
             <div class="hq-item">
-                <div class="hq-box" onclick="reagir(this, 218, 165, 32)">
+                <div class="hq-box" onclick="reagir(this, 218, 165, 32, 'Dália Amarante... luxo puro!', 'linear-gradient(135deg, #daa520, #b8860b)', '#4a360d')">
                     <div class="interior">Nelisa<br>Alex</div>
                     <div class="capa" style="background-image: url('Dália.png');"></div>
                 </div>
@@ -132,7 +123,7 @@
             </div>
 
             <div class="hq-item">
-                <div class="hq-box" onclick="reagir(this, 139, 0, 0)">
+                <div class="hq-box" onclick="reagir(this, 139, 0, 0, 'Kai? Esse é perigoso!', 'radial-gradient(circle, #8b0000, #300000)', '#ff4d4d')">
                     <div class="interior">Gerbert<br>Karol</div>
                     <div class="capa" style="background-image: url('Kai.png');"></div>
                 </div>
@@ -140,16 +131,16 @@
             </div>
 
             <div class="hq-item">
-                <div class="hq-box" onclick="reagir(this, 75, 0, 130)">
-                    <div class="interior">Joel<br>Igor (invasor)</div>
+                <div class="hq-box" onclick="reagir(this, 75, 0, 130, 'Dupla dinâmica na área!', 'linear-gradient(to bottom, #4b0082, #800080)', '#32ff32')">
+                    <div class="interior">Joel<br>Igor</div>
                     <div class="capa" style="background-image: url('Mikela e Ugiri.png');"></div>
                 </div>
                 <div class="nome-capa">Mikela e Ugiri</div>
             </div>
 
             <div class="hq-item">
-                <div class="hq-box" onclick="reagir(this, 220, 220, 220)">
-                    <div class="interior">Amo vocês<br>❤️</div>
+                <div class="hq-box" onclick="reagir(this, 255, 255, 255, 'Amo vocês, família!', 'linear-gradient(135deg, #fdf5e6, #faebd7)', '#4b0082')">
+                    <div class="interior">Amo vocês, gurizada. Muito obrigado por tudo.<br>❤️</div>
                     <div class="capa" style="background-image: url('Waiver.png');"></div>
                 </div>
                 <div class="nome-capa">Waiver</div>
@@ -160,37 +151,42 @@
 
     <div class="npc-area">
         <div class="balao" id="fala">Qual vai levar, cria?</div>
-        <img src="vendedor.gif" class="vendedor-gif">
+        <img src="vendedor.gif" class="vendedor-gif" id="vendedor">
     </div>
 
     <script>
         let coresAbertas = [];
 
-        function reagir(el, r, g, b) {
+        function reagir(el, r, g, b, falaPersonalizada, corFundo, corNomes) {
             const balao = document.getElementById('fala');
             const body = document.body;
+            const vendedor = document.getElementById('vendedor');
+            const interior = el.querySelector('.interior');
+            
             el.classList.toggle('aberta');
             const corId = `${r},${g},${b}`;
 
             if (el.classList.contains('aberta')) {
+                interior.style.background = corFundo;
+                interior.style.color = corNomes;
                 coresAbertas.push({r, g, b, id: corId});
-                balao.innerText = "Só tem gostoso aqui";
+                balao.innerText = falaPersonalizada;
+                vendedor.style.transform = "scale(1.1) rotate(5deg)";
             } else {
                 coresAbertas = coresAbertas.filter(cor => cor.id !== corId);
+                vendedor.style.transform = "scale(1)";
+                interior.style.background = 'white';
+                interior.style.color = '#1a1a1d';
             }
 
             if (coresAbertas.length === 0) {
-                body.style.background = "#1a1a1d";
+                body.style.background = "#0d0d0f";
                 balao.innerText = "Qual vai levar, cria?";
             } else {
                 let totalR = 0, totalG = 0, totalB = 0;
-                coresAbertas.forEach(cor => {
-                    totalR += cor.r; totalG += cor.g; totalB += cor.b;
-                });
-                const rMedio = Math.round(totalR / coresAbertas.length);
-                const gMedio = Math.round(totalG / coresAbertas.length);
-                const bMedio = Math.round(totalB / coresAbertas.length);
-                body.style.background = `radial-gradient(circle at center, rgb(${rMedio}, ${gMedio}, ${bMedio}) 0%, #1a1a1d 70%)`;
+                coresAbertas.forEach(cor => { totalR += cor.r; totalG += cor.g; totalB += cor.b; });
+                const n = coresAbertas.length;
+                body.style.background = `radial-gradient(circle at center, rgba(${totalR/n}, ${totalG/n}, ${totalB/n}, 0.4) 0%, #0d0d0f 80%)`;
             }
         }
     </script>
