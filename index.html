@@ -52,7 +52,6 @@
             z-index: 2;
         }
 
-        /* Parte de apoio da madeira */
         .shelf-support {
             height: 25px;
             background: #2b1614;
@@ -67,7 +66,7 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(2px);
+            backdrop-filter: blur(5px);
             z-index: 10;
             border-radius: 5px;
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -79,7 +78,7 @@
         }
 
         .glass-pane::before {
-            content: 'ABRA';
+            content: 'CLIQUE PARA ABRIR';
             color: white;
             font-weight: bold;
             letter-spacing: 2px;
@@ -137,6 +136,7 @@
             background: white; padding: 8px 15px;
             border-radius: 20px; font-weight: bold; margin-bottom: 5px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            min-height: 20px;
         }
 
         .vendedor-gif { width: 180px; filter: drop-shadow(0 0 10px #000); }
@@ -161,7 +161,7 @@
             <div class="hq-item">
                 <div class="hq-box" onclick="reagir(this, 'K', 'flash-orange')">
                     <div class="interior">K</div>
-                    <div class="capa" style="background-image: url('html imagens/Chris.png');"></div>
+                    <div class="capa" style="background-image: url('Chris.png');"></div>
                 </div>
                 <div class="nome">Chris</div>
             </div>
@@ -169,7 +169,7 @@
             <div class="hq-item">
                 <div class="hq-box" onclick="reagir(this, 'A', 'flash-gold')">
                     <div class="interior">A</div>
-                    <div class="capa" style="background-image: url('html imagens/Dália.png');"></div>
+                    <div class="capa" style="background-image: url('Dália.png');"></div>
                 </div>
                 <div class="nome">Dália</div>
             </div>
@@ -177,7 +177,7 @@
             <div class="hq-item">
                 <div class="hq-box" onclick="reagir(this, 'R', 'flash-red')">
                     <div class="interior">R</div>
-                    <div class="capa" style="background-image: url('html imagens/Kai.png');"></div>
+                    <div class="capa" style="background-image: url('Kai.png');"></div>
                 </div>
                 <div class="nome">Kai</div>
             </div>
@@ -185,7 +185,7 @@
             <div class="hq-item">
                 <div class="hq-box" onclick="reagir(this, 'O', 'flash-purple')">
                     <div class="interior">O</div>
-                    <div class="capa" style="background-image: url('html imagens/Mikela e Ugiri.png');"></div>
+                    <div class="capa" style="background-image: url('Mikela e Ugiri.png');"></div>
                 </div>
                 <div class="nome">Mikela e Ugiri</div>
             </div>
@@ -193,7 +193,7 @@
             <div class="hq-item">
                 <div class="hq-box" onclick="reagir(this, 'L', 'flash-white')">
                     <div class="interior">L</div>
-                    <div class="capa" style="background-image: url('html imagens/Waiver.png');"></div>
+                    <div class="capa" style="background-image: url('Waiver.png');"></div>
                 </div>
                 <div class="nome">Waiver</div>
             </div>
@@ -203,7 +203,7 @@
 
     <div class="npc-area">
         <div class="balao" id="fala">Qual vai levar, cria?</div>
-        <img src="html imagens/vendedor.gif" class="vendedor-gif">
+        <img src="vendedor.gif" class="vendedor-gif">
     </div>
 
     <script>
@@ -213,14 +213,14 @@
             
             const jaAberta = el.classList.contains('aberta');
             
-            // Reseta estado
+            // Reseta estado de todas as HQs
             document.querySelectorAll('.hq-box').forEach(h => h.classList.remove('aberta'));
             body.className = ""; 
 
             if (!jaAberta) {
                 el.classList.add('aberta');
                 body.classList.add(corFlash); // 2. Aplica o flash de cor
-                balao.innerText = "Só tem gostoso aqui!";
+                balao.innerText = "Só tem gostoso aqui";
             } else {
                 balao.innerText = "Qual vai levar, cria?";
             }
