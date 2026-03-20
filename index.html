@@ -213,13 +213,12 @@
             
             const jaAberta = el.classList.contains('aberta');
             
-            // Reseta estado de todas as HQs
             document.querySelectorAll('.hq-box').forEach(h => h.classList.remove('aberta'));
             body.className = ""; 
 
             if (!jaAberta) {
                 el.classList.add('aberta');
-                body.classList.add(corFlash); // 2. Aplica o flash de cor
+                body.classList.add(corFlash);
                 balao.innerText = "Só tem gostoso aqui";
             } else {
                 balao.innerText = "Qual vai levar, cria?";
