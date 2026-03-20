@@ -11,12 +11,14 @@
             background: #1a1a1d;
             font-family: 'Segoe UI', sans-serif;
             overflow-x: hidden;
-            /* 3. A base do fundo é escura, a mistura de cores virá por cima */
             transition: background 0.3s ease;
         }
 
+        /* Título agora posicionado em relação ao wrapper da banca */
         .titulo-banca {
-            font-size: 38px; font-weight: bold; margin-bottom: 25px;
+            font-size: 32px; font-weight: bold; 
+            margin-bottom: 10px; /* Colado na estante */
+            text-align: center;
             background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-size: 400% 400%; animation: gradientText 8s linear infinite;
@@ -25,17 +27,23 @@
 
         @keyframes gradientText { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
-        /* 2. Ajuste de escala e espaçamento da banca */
-        .shelf-wrapper { position: relative; transform: scale(1.15); margin-top: -20px; }
+        .shelf-wrapper { 
+            position: relative; 
+            transform: scale(1.15); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
         .shelf-container {
             background: #4a2c2a; 
-            padding: 25px; /* Reduzido para ficar mais modesto */
+            /* Aumentei o terceiro valor (bottom) para 45px para o nome aparecer livre */
+            padding: 25px 25px 45px 25px; 
             border: 10px solid #361d1b; 
             border-radius: 8px 8px 0 0;
             box-shadow: inset 0 0 50px #000; 
             display: flex; 
-            gap: 25px; /* 2. Afastados um pouco mais */
+            gap: 25px; 
             perspective: 1000px; 
             position: relative; 
             z-index: 2;
@@ -44,7 +52,9 @@
         .shelf-support { height: 20px; background: #2b1614; width: 104%; margin-left: -2%; border-radius: 0 0 10px 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.7); }
 
         .glass-pane {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; 
+            top: 45px; /* Ajustado para começar abaixo do título */
+            left: 0; width: 100%; height: calc(100% - 65px);
             background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px); z-index: 10;
             border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.2);
             cursor: pointer; display: flex; justify-content: center; align-items: center;
@@ -54,17 +64,15 @@
         .glass-pane::before { content: 'ABRA'; color: white; font-weight: bold; letter-spacing: 2px; text-shadow: 0 0 10px #000; border: 2px solid white; padding: 10px; }
         .glass-pane.opened { transform: translateY(-110%) rotateX(20deg); opacity: 0; pointer-events: none; }
 
-        .hq-item { text-align: center; color: #f0e68c; }
+        .hq-item { text-align: center; }
 
         .hq-box {
-            width: 125px; /* Tamanho original das fotos */
-            height: 185px; 
+            width: 125px; height: 185px; 
             position: relative; transform-style: preserve-3d;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
 
-        /* Hover no PC, clique no mobile */
         .hq-box:hover:not(.aberta) { transform: translateY(-5px) rotateY(10deg); }
 
         .capa, .interior { position: absolute; width: 100%; height: 100%; border-radius: 2px; backface-visibility: hidden; }
@@ -72,7 +80,6 @@
         .capa {
             z-index: 2; transform-origin: left; transition: transform 0.8s ease;
             background-size: cover; background-position: center; border-left: 3px solid #111;
-            /* 1. Removida a borda branca inferior para ficar mais modesto */
             box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
         }
 
@@ -86,8 +93,14 @@
         .hq-box.aberta .capa { transform: rotateY(-155deg); }
         .hq-box.aberta { transform: scale(1.03); }
 
-        /* 1. Ajuste do texto abaixo da foto */
-        .nome-capa { margin-top: 8px; font-weight: bold; font-size: 10px; text-transform: uppercase; color: #f0e68c; text-shadow: 1px 1px 2px #000; }
+        .nome-capa { 
+            margin-top: 12px; 
+            font-weight: bold; font-size: 10px; 
+            text-transform: uppercase; color: #f0e68c; 
+            text-shadow: 1px 1px 2px #000;
+            position: relative;
+            z-index: 5;
+        }
 
         .npc-area { position: fixed; bottom: 10px; right: 20px; display: flex; flex-direction: column; align-items: center; }
         .balao { background: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 14px; margin-bottom: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); min-height: 20px; }
@@ -96,9 +109,9 @@
 </head>
 <body>
 
-    <div class="titulo-banca">Banca Vila Velha</div>
-
     <div class="shelf-wrapper">
+        <div class="titulo-banca">Banca Vila Velha</div>
+
         <div class="glass-pane" onclick="this.classList.add('opened')"></div>
         
         <div class="shelf-container">
@@ -151,49 +164,35 @@
     </div>
 
     <script>
-        // Array para guardar as cores (RGB) das HQs que estão abertas
         let coresAbertas = [];
 
         function reagir(el, r, g, b) {
             const balao = document.getElementById('fala');
             const body = document.body;
-            
-            // Alterna o estado da HQ clicada
             el.classList.toggle('aberta');
-            
-            // Cria um identificador único para a cor
             const corId = `${r},${g},${b}`;
 
             if (el.classList.contains('aberta')) {
-                // Adiciona a cor à lista
                 coresAbertas.push({r, g, b, id: corId});
                 balao.innerText = "Só tem gostoso aqui";
             } else {
-                // Remove a cor da lista
                 coresAbertas = coresAbertas.filter(cor => cor.id !== corId);
             }
 
-            // 3. Sistema de Mistura de Cores Dinâmico
             if (coresAbertas.length === 0) {
-                // Se tudo fechar, volta ao fundo original
                 body.style.background = "#1a1a1d";
                 balao.innerText = "Qual vai levar, cria?";
             } else {
-                // Calcula a média das cores abertas
                 let totalR = 0, totalG = 0, totalB = 0;
                 coresAbertas.forEach(cor => {
                     totalR += cor.r; totalG += cor.g; totalB += cor.b;
                 });
-                
                 const rMedio = Math.round(totalR / coresAbertas.length);
                 const gMedio = Math.round(totalG / coresAbertas.length);
                 const bMedio = Math.round(totalB / coresAbertas.length);
-
-                // Aplica a cor misturada como um degradê radial suave
                 body.style.background = `radial-gradient(circle at center, rgb(${rMedio}, ${gMedio}, ${bMedio}) 0%, #1a1a1d 70%)`;
             }
         }
     </script>
-
 </body>
 </html>
